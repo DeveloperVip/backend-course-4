@@ -1,12 +1,20 @@
 import bcrypt from "bcrypt";
 import User from "../../models/user.model.js";
+import { getResponseData } from "../../utils/respone.js";
 const authPassword = async (req, res, next) => {
   const { password } = req.body;
   console.log("🚀 ~ authPassword ~ req.body:", req.body);
   const passwordCorrect = await bcrypt.compare(password, req.user.password);
   console.log("🚀 ~ authPassword ~ passwordCorrect:", passwordCorrect);
   if (passwordCorrect) next();
-  else return res.status(400).json({ message: "password is incorrect" });
+  else {
+    const response = getResponseData({
+      data: null,
+      status: false,
+      message: "Tài khoản hoặc mật khẩu không chính xác ",
+    });
+    return res.status(400).json(response);
+  }
 };
 
 const authUser = async (req, res, next) => {
@@ -16,6 +24,13 @@ const authUser = async (req, res, next) => {
   if (user) {
     req.user = { password: user.password };
     next();
-  } else return res.status(400).json({ message: "User does not exist" });
+  } else {
+    const response = getResponseData({
+      data: null,
+      status: false,
+      message: "Tài khoản hoặc mật khẩu không chính xác ",
+    });
+    return res.status(400).json(response);
+  }
 };
 export { authPassword, authUser };
