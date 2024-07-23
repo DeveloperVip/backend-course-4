@@ -9,4 +9,5 @@ const loginUser = async (user) => {
   return token;
 };
 
+
 export { loginUser };
