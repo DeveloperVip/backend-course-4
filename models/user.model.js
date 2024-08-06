@@ -4,25 +4,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-
-  purposeOfUse: {
-    type: String,
-    enum: ["School", "Work", "PersonalUse"],
-    require: true,
-  },
   age: {
     type: Number,
-    default: "undefined",
+    default: "",
   },
   title: {
     type: String,
-    enum: ["Mr.", "Ms.", "Mrs.", "Dr.", "Mx."],
-    default: "",
+    default: "Personal",
     require: true,
-  },
-  positionOfUse: {
-    type: String,
-    default: "",
   },
   firstName: {
     type: String,
@@ -32,11 +21,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  userName:{
+    type:String,
+  },
   password: {
     type: String,
     require: true,
   },
 });
 const User = mongoose.model("user", userSchema);
-export default User
-
+export default User;

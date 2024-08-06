@@ -1,19 +1,34 @@
-import {
-  authPassword,
-  authUser,
-} from "../middlewares/user.middleware/user.auth.js";
-import { loginUser } from "../services/user.service/login.js";
+import { checkEmail, loginUser } from "../services/user.service/login.js";
 import { createUser } from "../services/user.service/register.js";
-import express from "express";
-import { getResponseData } from "../utils/respone.js";
+import { deleteUser, updateUser } from "../services/user.service/update.js";
+import { getResponseData } from "../utils/response.js"; // Giả sử bạn có một tiện ích để tạo phản hồi JSON
+import User from "../models/user.model.js";
+import { randomUserName } from "../utils/randomUserName.js";
+import { createProfile } from "../services/profile.service/createProfile.js"; // Assuming you have a service for creating profiles
 import passport from "passport";
 
-const userRouter = express.Router();
+const checkEmailController = async (req, res) => {
+  const email = req.body.email;
+  const existEmail = await checkEmail(email);
+  if (existEmail) {
+    const response = getResponseData({
+      data: existEmail,
+      status: true,
+      message: "success",
+    });
+    res.status(200).json(response);
+  } else {
+    const response = getResponseData({
+      data: null,
+      status: false,
+      message: "email not exist",
+    });
+    res.status(201).json(response);
+  }
+};
 
-userRouter.post("/create-user", async (req, res) => {
+const createUserController = async (req, res) => {
   try {
-    // console.log("here");
-    // console.log("🚀 ~ userRouter.post ~ req:", req.body);
     const user = await createUser(req.body);
     const response = getResponseData({
       data: user,
@@ -29,57 +44,112 @@ userRouter.post("/create-user", async (req, res) => {
     });
     res.status(500).json(response);
   }
-});
-userRouter.post("/login", authUser, authPassword, async (req, res) => {
-  // get username and password from request
+};
+
+const loginUserController = async (req, res) => {
   try {
     const token = await loginUser(req.body);
-    console.log("🚀 ~ userRouter.post ~ token:", token);
     const response = getResponseData({
       data: { token },
       status: true,
       message: "success",
     });
-    // find user from database
     res.send(response);
-  } catch (e) {}
-});
-userRouter.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-// Route to handle the callback from Google OAuth
-userRouter.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  (req, res) => {
-    console.log("vao 4");
-    // Successful authentication, redirect to profile.
-    res.redirect("/user/profile");
+  } catch (e) {
+    res.status(500).json({ status: false, message: "Login failed" });
   }
-);
+};
 
-// Route to handle profile
-userRouter.get("/profile", (req, res) => {
-    console.log('Cookies:', req.cookies); // Kiểm tra cookies có được gửi không
-    console.log('Session:', req.session); // Kiểm tra session
+const googleAuthController = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
+
+const googleAuthCallbackController = async (req, res) => {
+  try {
+    const { email, family_name, given_name } = req.user._json;
+    const userName = randomUserName(email);
+    const newUser = new User({
+      email,
+      family_name,
+      given_name,
+      userName,
+    });
+
+    await newUser.save();
+    const newProfile = createProfile(newUser._id);
+    await newProfile.save();
+    res.redirect("/user/profile");
+  } catch (error) {
+    console.error("Error during Google authentication:", error);
+    res.redirect("/");
+  }
+};
+
+const profileController = (req, res) => {
   if (!req.user) {
-    console.log("vao 5");
     res.redirect("/");
   } else {
-    console.log("vao 6");
     res.send(`<h1>Hello ${req.user.displayName}</h1>`);
   }
-});
+};
 
-// Route to handle logout
-userRouter.get("/logout", (req, res) => {
+const logoutController = (req, res) => {
   req.logout((err) => {
     if (err) {
       console.error(err);
     }
     res.redirect("/");
   });
-});
-export default userRouter;
+};
+
+const updateUserController = async (req, res) => {
+  const id = req.params.id;
+  const updated = await updateUser(id, req.body);
+  if (updated) {
+    const response = getResponseData({
+      data: updated,
+      status: 200,
+      message: "Updated access",
+    });
+    res.status(200).json(response);
+  } else {
+    const response = getResponseData({
+      data: null,
+      status: 400,
+      message: "Updated not access",
+    });
+    res.status(400).json(response);
+  }
+};
+
+const deleteUserController = async (req, res) => {
+  const id = req.params.id;
+  const deleted = await deleteUser(id);
+  if (deleted) {
+    const response = getResponseData({
+      data: deleted,
+      status: 200,
+      message: "deleted access",
+    });
+    res.status(200).json(response);
+  } else {
+    const response = getResponseData({
+      data: null,
+      status: 400,
+      message: "deleted not access",
+    });
+    res.status(400).json(response);
+  }
+};
+
+export {
+  checkEmailController,
+  createUserController,
+  loginUserController,
+  googleAuthController,
+  googleAuthCallbackController,
+  profileController,
+  logoutController,
+  updateUserController,
+  deleteUserController,
+};

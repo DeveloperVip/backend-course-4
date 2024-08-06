@@ -6,8 +6,14 @@ import session from "express-session";
 import cookieParser from 'cookie-parser';
 import cookieSession from "cookie-session";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import userRouter from "./controllers/user.controller.js";
 import cors from "cors";
+import userRouter from "./routers/user.route.js";
+import profileRouter from "./routers/profile.route.js";
+import questionRouter from "./routers/question.route.js";
+import answerRouter from "./routers/answer.route.js";
+import topicRouter from "./routers/topic.route.js";
+import quizRouter from "./routers/quiz.route.js";
+import historyRouter from "./routers/history.route.js";
 
 const app = express();
 app.use(cookieParser());
@@ -56,11 +62,21 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
   console.log("vao 3");
   done(null, user);
-});
+});  
+
+//router controller
+app.use("/user", userRouter);
+app.use("/profile",profileRouter)
+app.use("/question",questionRouter)
+app.use("/answer",answerRouter)
+app.use("/topic",topicRouter)
+app.use("/quiz",quizRouter)
+app.use("/history",historyRouter)
+
 //connect database
 mongoose
   .connect(
-    "mongodb+srv://h1403lovea0711:14032003@cluster0.jqrbnu2.mongodb.net/project-course-5?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://h1403lovea0711:14032003@cluster0.jqrbnu2.mongodb.net/project-course-5?retryWrites=true&w=majority&appName=Cluster0",{autoCreate:false}
   )
   .then(() => {
     console.log("database is connect");
@@ -68,7 +84,7 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
-app.use("/user", userRouter);
+  
 app.listen(port, () => {
   console.log("Server is running!");
 });
