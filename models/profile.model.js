@@ -13,10 +13,8 @@ const profileSchema = new schema({
       type: String,
     },
   ],
-  purpose: {
+  place: {
     type: String,
-    enum: ["school", "organization"],
-    default: "school",
   },
   avatar: {
     public_id: { type: String, default: "file-uploads/02-1User-Outline" },

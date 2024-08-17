@@ -9,10 +9,10 @@ import {
 
 const quizRouter = express.Router();
 
-quizRouter.post("/", createQuizController);
-quizRouter.get("/:id", getQuizByIdController);
+quizRouter.post("/create", createQuizController);
+quizRouter.get("/get:id", getQuizByIdController);
 quizRouter.get("/", getAllQuizzesController);
-quizRouter.put("/:id", updateQuizController);
-quizRouter.delete("/:id", deleteQuizController);
+quizRouter.put("/update:id", updateQuizController);
+quizRouter.delete("/delete:id", deleteQuizController);
 
 export default quizRouter;

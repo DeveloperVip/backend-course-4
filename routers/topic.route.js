@@ -9,10 +9,10 @@ import {
 
 const topicRouter = express.Router();
 
-topicRouter.post("/", createTopicController);
-topicRouter.get("/:id", getTopicByIdController);
+topicRouter.post("/create", createTopicController);
+topicRouter.get("/get:id", getTopicByIdController);
 topicRouter.get("/", getAllTopicsController);
-topicRouter.put("/:id", updateTopicController);
-topicRouter.delete("/:id", deleteTopicController);
+topicRouter.put("/update:id", updateTopicController);
+topicRouter.delete("/delete:id", deleteTopicController);
 
 export default topicRouter;

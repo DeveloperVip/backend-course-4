@@ -1,49 +1,49 @@
 import { cloudinary } from "../../cloudinary.config.js";
-import Answer from "../../models/answer.model.js";
+import Question from "../../models/Question.model.js";
 
-const uploadImage =async(image)=>{
+const uploadImageQuestion =async(image)=>{
     console.log("image",image)
     const dataUrl = `data:${image.mimetype};base64,${image.buffer.toString('base64')}`;
     const fileName = image.originalname.split('.')[0];
     await cloudinary.uploader.upload(dataUrl, {
         public_id: fileName,
         resource_type: 'auto',
-        folder:"related-pictures"
+        folder:"question-pictures"
     },async(err, result) => {
         if (result) {
             console.log(result);
-            const newAnswer = new Answer.create({
-                relatedPictures: {
+            const newQuestion = new Question.create({
+                pictureQuestion: {
                     public_id: result.public_id,
                     secure_url: result.secure_url,
                 },
             });
-            await newAnswer.save();
+            await newQuestion.save();
 
-            return newAnswer;
+            return newQuestion;
         }
     });
 }
 
-const updateImage = async(image,answerId)=>{
+const updateImageQuestion = async(image,questionId)=>{
     console.log("image",image)
     const dataUrl = `data:${image.mimetype};base64,${image.buffer.toString('base64')}`;
     const fileName = image.originalname.split('.')[0];
-    const answer =await Answer.findById(answerId)
+    const question =await Question.findById(questionId)
     await cloudinary.uploader.upload(dataUrl, {
         public_id: fileName,
         resource_type: 'auto',
-        folder:"related-pictures"
+        folder:"question-pictures"
     },async(err, result) => {
         if (result) {
             console.log(result);
-            answer.relatedPictures.public_id = result.public_id
-            answer.relatedPictures.secure_url = result.secure_url
-            await answer.save();
+            question.pictureQuestion.public_id = result.public_id
+            question.pictureQuestion.secure_url = result.secure_url
+            await question.save();
 
-            return answer;
+            return question;
         }
     });
 }
 
-export {uploadImage,updateImage}
+export {uploadImageQuestion,updateImageQuestion}

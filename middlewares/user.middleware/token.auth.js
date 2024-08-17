@@ -2,7 +2,7 @@ import User from "../../models/user.model.js";
 import { getResponseData } from "../../utils/respone.js";
 
 export const tokenMiddleware = async (req, res, next) => {
-    const authorizationHeader = await req.headers.authorization;
+    const authorizationHeader = await req.headers.Authorization;
     if (!authorizationHeader) {
         const response = getResponseData({data:null,status:false,message: "Authorization header is missing" })
       return res.status(401).json(response);
