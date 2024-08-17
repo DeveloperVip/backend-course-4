@@ -8,6 +8,7 @@ import {
     uploadImageQuestionController,
     updateImageQuestionController
 } from "../controllers/question.controller.js";
+import { upload } from "../cloudinary.config.js";
 
 const questionRouter = express.Router();
 questionRouter.post("/api/image/upload", upload.single("file"), tokenMiddleware, uploadImageQuestionController);

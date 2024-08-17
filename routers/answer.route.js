@@ -1,6 +1,6 @@
 import express from "express";
-import { upload } from "../cloudinary.config";
-import { tokenMiddleware } from "../middlewares/user.middleware/token.auth";
+import { upload } from "../cloudinary.config.js";
+import { tokenMiddleware } from "../middlewares/user.middleware/token.auth.js";
 import {
     uploadImageController,
     updateImageController,

@@ -1,11 +1,13 @@
 import { checkEmail, loginUser } from "../services/user.service/login.js";
 import { createUser } from "../services/user.service/register.js";
 import { deleteUser, updateUser } from "../services/user.service/update.js";
-import { getResponseData } from "../utils/response.js"; // Giả sử bạn có một tiện ích để tạo phản hồi JSON
+
 import User from "../models/user.model.js";
 import { randomUserName } from "../utils/randomUserName.js";
-import { createProfile } from "../services/profile.service/createProfile.js"; // Assuming you have a service for creating profiles
+
 import passport from "passport";
+import { getResponseData } from "../utils/respone.js";
+import { createProfile } from "../services/profile.service/profileInitial.js";
 
 const checkEmailController = async (req, res) => {
   const email = req.body.email;

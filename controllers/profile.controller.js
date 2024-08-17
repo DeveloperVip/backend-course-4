@@ -1,6 +1,7 @@
 import { uploadFile } from "../services/upload.service/file.upload.js";
 import { updateProfile } from "../services/profile.service/updateProfile.js";
-import { getResponseData } from "../utils/response.js"; // Giả sử bạn có một tiện ích để tạo phản hồi JSON
+import { getResponseData } from "../utils/respone.js";
+
 
 const uploadFileController = async (req, res) => {
     const file = req.file;

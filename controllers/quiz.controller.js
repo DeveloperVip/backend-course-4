@@ -4,7 +4,7 @@ import {
     getAllQuizzes,
     updateQuiz,
     deleteQuiz
-} from "../services/quiz.service/crud.quiz";
+} from "../services/quiz.service/crud.quiz.js";
 
 const createQuizController = async (req, res) => {
     try {

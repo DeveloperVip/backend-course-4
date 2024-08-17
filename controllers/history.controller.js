@@ -4,7 +4,7 @@ import {
   getAllHistories,
   getHistoryById,
   updateHistory,
-} from "../services/history.service/crud.history";
+} from "../services/history.service/crud.history.js";
 
 const createHistoryController = async (req, res) => {
   try {

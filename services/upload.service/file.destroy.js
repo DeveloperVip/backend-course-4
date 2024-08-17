@@ -1,4 +1,4 @@
-import { cloudinary } from "../../cloudinary.config";
+import { cloudinary } from "../../cloudinary.config.js";
 
 export const fileDestroy = (publicId)=>{
     cloudinary.uploader.destroy(publicId, (error, result) => {

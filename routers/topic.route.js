@@ -5,7 +5,7 @@ import {
     getAllTopicsController,
     updateTopicController,
     deleteTopicController
-} from "../controllers/topic.controller";
+} from "../controllers/topic.controller.js";
 
 const topicRouter = express.Router();
 
