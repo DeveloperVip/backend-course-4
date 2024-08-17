@@ -1,5 +1,6 @@
 import { cloudinary } from "../../cloudinary.config.js";
-import Question from "../../models/Question.model.js";
+import Question from "../../models/question.model.js";
+
 
 const uploadImageQuestion =async(image)=>{
     console.log("image",image)
