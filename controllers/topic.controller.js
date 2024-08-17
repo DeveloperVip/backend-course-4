@@ -4,7 +4,7 @@ import {
     getAllTopics,
     updateTopic,
     deleteTopic
-} from "../services/topic.service/curd.topic";
+} from "../services/topic.service/curd.topic.js";
 
 
 const createTopicController = async (req, res) => {
