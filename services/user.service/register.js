@@ -27,7 +27,7 @@ export const createUser = async (user) => {
     password: hashPassword,
   });
   await newUser.save();
-  const newProfile = createProfile(newUser._id)
+  const newProfile = await createProfile(newUser._id)
   await newProfile.save()
   console.log("🚀 ~ createUser ~ newUser:", newUser);
   return newUser;
