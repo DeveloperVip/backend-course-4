@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import dotenv from "dotenv";
 import session from "express-session";
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import cors from "cors";
@@ -18,12 +18,7 @@ import historyRouter from "./routers/history.route.js";
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:8000", // Thay đổi theo địa chỉ frontend của bạn
-    credentials: true,
-  })
-);
+app.use(cors());
 const port = 8000;
 dotenv.config();
 //config cookie session
@@ -62,21 +57,22 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
   console.log("vao 3");
   done(null, user);
-});  
+});
 
 //router controller
 app.use("/user", userRouter);
-app.use("/profile",profileRouter)
-app.use("/question",questionRouter)
-app.use("/answer",answerRouter)
-app.use("/topic",topicRouter)
-app.use("/quiz",quizRouter)
-app.use("/history",historyRouter)
+app.use("/profile", profileRouter);
+app.use("/question", questionRouter);
+app.use("/answer", answerRouter);
+app.use("/topic", topicRouter);
+app.use("/quiz", quizRouter);
+app.use("/history", historyRouter);
 
 //connect database
 mongoose
   .connect(
-    "mongodb+srv://h1403lovea0711:14032003@cluster0.jqrbnu2.mongodb.net/project-course-5?retryWrites=true&w=majority&appName=Cluster0",{autoCreate:false}
+    "mongodb+srv://h1403lovea0711:14032003@cluster0.jqrbnu2.mongodb.net/project-course-5?retryWrites=true&w=majority&appName=Cluster0",
+    { autoCreate: false }
   )
   .then(() => {
     console.log("database is connect");
@@ -84,7 +80,7 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
-  
+
 app.listen(port, () => {
   console.log("Server is running!");
 });
