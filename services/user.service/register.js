@@ -28,7 +28,6 @@ export const createUser = async (user) => {
   });
   await newUser.save();
   const newProfile = await createProfile(newUser._id)
-  await newProfile.save()
   console.log("🚀 ~ createUser ~ newUser:", newUser);
   return newUser;
 };
