@@ -2,7 +2,6 @@ import Answer from "../../models/answer.model.js"
 
 const createAnswer = async(data)=>{
     const newAnswer = Answer.create(data)
-    await newAnswer.save();
     return newAnswer
 }
 

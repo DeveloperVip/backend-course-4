@@ -9,13 +9,14 @@ import {
     updateImageQuestionController
 } from "../controllers/question.controller.js";
 import { upload } from "../cloudinary.config.js";
+import { convertTimeToMilliseconds } from "../middlewares/convertTimeToMilliseconds.js";
 
 const questionRouter = express.Router();
 questionRouter.post("/api/image/upload", upload.single("file"), tokenMiddleware, uploadImageQuestionController);
 
 questionRouter.put("/api/upload/update/:id", upload.single("file"), tokenMiddleware, updateImageQuestionController);
 
-questionRouter.post("/create", tokenMiddleware, createQuestionController);
+questionRouter.post("/create", tokenMiddleware, convertTimeToMilliseconds,createQuestionController);
 questionRouter.put("/update/:id", tokenMiddleware, updateQuestionController);
 questionRouter.get("/", tokenMiddleware, getQuestionController);
 questionRouter.delete("/delete/:id", tokenMiddleware, deleteQuestionController);

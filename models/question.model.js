@@ -16,7 +16,7 @@ const questionSchema = new schema({
   answersCorrect: [{ type: mongoose.Types.ObjectId, ref: "answer" }],
   isMultiple: { type: Boolean },
   point: { type: Number },
-  time: { type: Number },
+  time: { type: Number},
 });
 
 const Question = mongoose.model("question", questionSchema);

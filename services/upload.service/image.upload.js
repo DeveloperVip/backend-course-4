@@ -5,24 +5,12 @@ const uploadImage =async(image)=>{
     console.log("image",image)
     const dataUrl = `data:${image.mimetype};base64,${image.buffer.toString('base64')}`;
     const fileName = image.originalname.split('.')[0];
-    await cloudinary.uploader.upload(dataUrl, {
+    const data = await cloudinary.uploader.upload(dataUrl, {
         public_id: fileName,
         resource_type: 'auto',
         folder:"related-pictures"
-    },async(err, result) => {
-        if (result) {
-            console.log(result);
-            const newAnswer = new Answer.create({
-                relatedPictures: {
-                    public_id: result.public_id,
-                    secure_url: result.secure_url,
-                },
-            });
-            await newAnswer.save();
-
-            return newAnswer;
-        }
     });
+    return data
 }
 
 const updateImage = async(image,answerId)=>{

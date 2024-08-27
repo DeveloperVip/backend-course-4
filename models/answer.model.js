@@ -8,6 +8,7 @@ const answerSchema = new schema({
       type: String,
     },
   },
+  isTrue: { type: Boolean },
 });
 
 const Answer = mongoose.model("answer", answerSchema);
