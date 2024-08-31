@@ -22,7 +22,7 @@ export const tokenMiddleware = async (req, res, next) => {
       const payload = jwt.verify(token, "hunghoang14");
       console.log("🚀 ~ userMiddleware ~ payload:", payload)
       if (payload) {
-        const select = await User.findOne({userName:payload.userName}).exec();
+        const select = await User.findOne({email:payload.email}).exec();
         console.log("🚀 ~ userMiddleware ~ select:", select)
   
         req.user = { ...payload, userId: select._id,password : select.password };

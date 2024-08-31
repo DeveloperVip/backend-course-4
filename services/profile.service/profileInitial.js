@@ -6,7 +6,6 @@ const createProfile = async (userId) => {
       console.log(userId);
       const newProfile = await Profile.create({ userId: userId });
       console.log("🚀 ~ createProfile ~ newProfile:", newProfile);
-      await newProfile.save()
       return newProfile;
     } catch (error) {
       console.error("Error creating profile:", error);

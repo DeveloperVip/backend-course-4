@@ -1,6 +1,7 @@
 import Answer from "../../models/answer.model.js"
 
-const createAnswer = async(data)=>{
+const createAnswer = async(data) => {
+    // console.log("🚀 ~ createAnswer ~ data:", data)
     const newAnswer = Answer.create(data)
     return newAnswer
 }

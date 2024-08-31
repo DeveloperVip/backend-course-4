@@ -3,6 +3,7 @@ import Topic from "../../models/topic.model.js";
 const createTopic = async (data) => {
   try {
       const newTopic = new Topic(data);
+      console.log("🚀 ~ createTopic ~ newTopic:", newTopic)
       await newTopic.save();
       return newTopic;
   } catch (error) {

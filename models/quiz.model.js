@@ -5,9 +5,12 @@ const quizSchema = new schema({
     type: mongoose.Types.ObjectId,
     ref: "user",
   },
+  name: { type: String },
+  image: { type: String },
   topic: { type: mongoose.Types.ObjectId, ref: "topic" },
-  grade: { type: String },
+  grade: { name: { type: String }, description: { type: String } },
   question: [{ type: mongoose.Types.ObjectId, ref: "question" }],
+  allAnswersSelected:[{ type: mongoose.Types.ObjectId, ref: "answer" }],
   point: { type: Number },
   time: { type: Number },
 });
