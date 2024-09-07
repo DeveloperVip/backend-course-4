@@ -23,28 +23,82 @@ const createQuiz = async (data, userId) => {
 const getQuizById = async (id) => {
   try {
     const quiz = await Quiz.findById(id)
+      .populate({ path: "userId", select: "userName _id" })
       .populate("topic")
       .populate({
-        path: 'question',
-        populate: [
-            { path: 'answers' },        
-            { path: 'answersCorrect' }  
-        ]
-    })
+        path: "question",
+        populate: [{ path: "answers" }, { path: "answersCorrect" }],
+      });
     return quiz;
   } catch (error) {
     throw new Error("Error getting quiz: " + error.message);
   }
 };
 
-const getAllQuizzes = async () => {
+const getQuizByUserId = async (userId) => {
   try {
-    const quizzes = await Quiz.find().populate("topic").populate("question");
+    const quiz = await Quiz.find({ userId: userId })
+      .populate("topic")
+      .populate({
+        path: "question",
+        populate: [{ path: "answers" }, { path: "answersCorrect" }],
+      });
+    return quiz;
+  } catch (error) {
+    throw new Error("Error getting quiz: " + error.message);
+  }
+};
+
+const getAllQuizzes = async (keyword, selectedFilter) => {
+  console.log("🚀 ~ getAllQuizzes ~ keyword, filterOptions:", keyword, selectedFilter);
+  try {
+    const quizzes = await Quiz.aggregate([
+      {
+        $match: {
+          name: { $regex: keyword, $options: "i" } 
+        }
+      },
+      {
+        $lookup: {
+          from: "topics",
+          localField: "topic",
+          foreignField: "_id",
+          as: "topic"
+        }
+      },
+      {
+        $unwind: {
+          path: "$topic",
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $lookup: {
+          from: "questions",
+          localField: "question",
+          foreignField: "_id",
+          as: "question"
+        }
+      },
+      selectedFilter ? {
+        $match: {
+          $or: [
+            { "topic.name": { $regex: selectedFilter, $options: "i" } },
+            { "topic.name": { $exists: false } }
+          ],
+        },
+      } : { $match: {} }
+    ]);
+
+    console.log(quizzes);
     return quizzes;
   } catch (error) {
     throw new Error("Error getting quizzes: " + error.message);
   }
 };
+
+
+
 
 const updateQuiz = async (id, data) => {
   try {
@@ -63,4 +117,11 @@ const deleteQuiz = async (id) => {
   }
 };
 
-export { createQuiz, getQuizById, getAllQuizzes, updateQuiz, deleteQuiz };
+export {
+  getQuizByUserId,
+  createQuiz,
+  getQuizById,
+  getAllQuizzes,
+  updateQuiz,
+  deleteQuiz,
+};

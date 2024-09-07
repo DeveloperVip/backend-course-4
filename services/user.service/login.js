@@ -7,7 +7,7 @@ const loginUser = async (user) => {
     email: user.email,
   };
 
-  const token = jwt.sign(payLoad, "hunghoang14", { expiresIn: "1h" });
+  const token = jwt.sign(payLoad, "hunghoang14", { expiresIn: "8h" });
   const data = {
     token:token,
     userName:user.userName

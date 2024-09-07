@@ -10,7 +10,6 @@ const quizSchema = new schema({
   topic: { type: mongoose.Types.ObjectId, ref: "topic" },
   grade: { name: { type: String }, description: { type: String } },
   question: [{ type: mongoose.Types.ObjectId, ref: "question" }],
-  allAnswersSelected:[{ type: mongoose.Types.ObjectId, ref: "answer" }],
   point: { type: Number },
   time: { type: Number },
 });

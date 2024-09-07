@@ -22,7 +22,11 @@ const authUser = async (req, res, next) => {
   const user = await User.findOne({ email: email }).exec();
   console.log(user);
   if (user) {
-    req.user = { password: user.password,email:user.email,userName:user.userName };
+    req.user = {
+      password: user.password,
+      email: user.email,
+      userName: user.userName,
+    };
     next();
   } else {
     const response = getResponseData({

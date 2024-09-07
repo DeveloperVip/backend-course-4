@@ -1,3 +1,5 @@
+import { getResponseData } from "../utils/respone.js";
+
 export const convertTimeToMilliseconds = (req, res, next) => {
   try {
     const timeString = req.body.time;
@@ -31,7 +33,7 @@ export const convertTimeToMilliseconds = (req, res, next) => {
         const response = getResponseData({
           data: null,
           status: false,
-          message: "Đơn vị thời gian không hợp lệ" ,
+          message: "Đơn vị thời gian không hợp lệ",
         });
         return res.status(400).json(response);
     }
@@ -45,7 +47,7 @@ export const convertTimeToMilliseconds = (req, res, next) => {
     const response = getResponseData({
       data: null,
       status: false,
-      message: "Đã xảy ra lỗi trong quá trình xử lý thời gian"  ,
+      message: "Đã xảy ra lỗi trong quá trình xử lý thời gian",
     });
     return res.status(500).json(response);
   }

@@ -1,17 +1,18 @@
 import express from "express";
 import {
-    createHistoryController,
-    getHistoryByIdController,
-    getAllHistoriesController,
-    updateHistoryController,
-    deleteHistoryController
+  createHistoryController,
+  getHistoryByIdController,
+  getAllHistoriesController,
+  updateHistoryController,
+  deleteHistoryController,
 } from "../controllers/history.controller.js";
+import { tokenMiddleware } from "../middlewares/user.middleware/token.auth.js";
 
 const historyRouter = express.Router();
 
-historyRouter.post("/create", createHistoryController);
-historyRouter.get("/:id", getHistoryByIdController);
-historyRouter.get("/", getAllHistoriesController);
+historyRouter.post("/create", tokenMiddleware, createHistoryController);
+historyRouter.get("/get/:id", tokenMiddleware, getHistoryByIdController);
+historyRouter.get("/getAllHistory", tokenMiddleware, getAllHistoriesController);
 historyRouter.put("/update:id", updateHistoryController);
 historyRouter.delete("/delete:id", deleteHistoryController);
 

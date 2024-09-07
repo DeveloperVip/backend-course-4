@@ -2,12 +2,12 @@ import { checkEmail, loginUser } from "../services/user.service/login.js";
 import { createUser } from "../services/user.service/register.js";
 import { deleteUser, updateUser } from "../services/user.service/update.js";
 import jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
-import { randomUserName } from "../utils/randomUserName.js";
+// import User from "../models/user.model.js";
+// import { randomUserName } from "../utils/randomUserName.js";
 
 import passport from "passport";
 import { getResponseData } from "../utils/respone.js";
-import { createProfile } from "../services/profile.service/profileInitial.js";
+// import { createProfile } from "../services/profile.service/profileInitial.js";
 import { getInfor } from "../services/user.service/setting.js";
 
 const checkEmailController = async (req, res) => {
@@ -53,7 +53,7 @@ const loginUserController = async (req, res) => {
   try {
     const data = await loginUser(req.user);
     const response = getResponseData({
-      data:data,
+      data: data,
       status: true,
       message: "success",
     });
@@ -76,9 +76,10 @@ const googleAuthCallbackController = async (req, res) => {
   );
 
   // Chuyển hướng người dùng tới frontend kèm theo token
-  const redirectUrl = `http://localhost:5173/?token=${token}&userName=${req.user.userName}`;
-    res.redirect(redirectUrl);
-}
+  const redirectUrl = `http://localhost:5173/login?token=${token}&userName=${req.user.userName}`;
+  console.log("🚀 ~ googleAuthCallbackController ~ redirectUrl:", redirectUrl);
+  res.redirect(redirectUrl);
+};
 
 const profileController = (req, res) => {
   if (!req.user) {
@@ -99,8 +100,8 @@ const logoutController = (req, res) => {
 
 const updateUserController = async (req, res) => {
   const id = req.params.id;
-  console.log("🚀 ~ updateUserController ~ req.params.id:", req.params.id)
-  console.log("🚀 ~ updateUserController ~ req.body:", req.body)
+  console.log("🚀 ~ updateUserController ~ req.params.id:", req.params.id);
+  console.log("🚀 ~ updateUserController ~ req.body:", req.body);
   const updated = await updateUser(id, req.body);
   if (updated) {
     const response = getResponseData({
@@ -139,8 +140,8 @@ const deleteUserController = async (req, res) => {
   }
 };
 
-const getInforController = async(req,res) =>{
-  const user = await getInfor(req.user.userId)
+const getInforController = async (req, res) => {
+  const user = await getInfor(req.user.userId);
   if (user) {
     const response = getResponseData({
       data: user,
@@ -156,7 +157,7 @@ const getInforController = async(req,res) =>{
     });
     res.status(400).json(response);
   }
-}
+};
 
 export {
   checkEmailController,
