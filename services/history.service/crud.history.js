@@ -2,9 +2,10 @@ import History from "../../models/history.model.js";
 
 
 const createHistory = async (data) => {
+    console.log("🚀 ~ createHistory ~ data:", data)
     try {
-        const newHistory = new History.create(data);
-        await newHistory.save();
+        const newHistory = await History.create(data);
+        console.log("🚀 ~ createHistory ~ newHistory:", newHistory)
         return newHistory;
     } catch (error) {
         throw new Error("Error creating history: " + error.message);
@@ -12,17 +13,34 @@ const createHistory = async (data) => {
 };
 
 const getHistoryById = async (id) => {
+    console.log("🚀 ~ getHistoryById ~ id:", id)
     try {
-        const history = await History.findById(id).populate('userID').populate('quiz');
+        const history = await History.findById(id).populate('userId').populate({
+            path:'quiz',
+            select:"-userId",
+            populate:[
+                {
+                    path:"question",
+                    select:"-userId",
+                    populate:{
+                        path:"answers"
+                    }
+                },{
+                    path:"topic",
+                    select:"name"
+                }
+            ]
+        });
+        console.log("🚀 ~ history ~ history:", history)
         return history;
     } catch (error) {
         throw new Error("Error getting history: " + error.message);
     }
 };
 
-const getAllHistories = async () => {
+const getAllHistories = async (userId) => {
     try {
-        const histories = await History.find().populate('userID').populate('quiz');
+        const histories = await History.find({userId:userId}).populate('userId').populate('quiz');
         return histories;
     } catch (error) {
         throw new Error("Error getting histories: " + error.message);

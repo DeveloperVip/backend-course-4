@@ -14,6 +14,9 @@ import answerRouter from "../routers/answer.route.js";
 import topicRouter from "../routers/topic.route.js";
 import quizRouter from "../routers/quiz.route.js";
 import historyRouter from "../routers/history.route.js";
+import User from "../models/user.model.js";
+import { createProfile } from "../services/profile.service/profileInitial.js";
+import { randomUserName } from "../utils/randomUserName.js";
 
 const app = express();
 app.use(cookieParser());
@@ -45,10 +48,34 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "http://localhost:8000/user/auth/google/callback",
     },
-    (accessToken, refreshToken, profile, done) => {
-      // Handle user profile information
-      console.log("vao 1");
-      return done(null, profile);
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
+        const existingUser = await User.findOne({ email: profile._json.email });
+
+        if (existingUser) {
+          // Nếu người dùng đã tồn tại, trả về thông tin người dùng
+          return done(null, existingUser);
+        } else {
+          // Nếu người dùng chưa tồn tại, tạo người dùng mới
+          const newUser = new User({
+            email: profile._json.email,
+            family_name: profile._json.family_name,
+            given_name: profile._json.given_name,
+            userName: await randomUserName(profile._json.email),
+          });
+
+          await newUser.save();
+
+          // Khởi tạo hồ sơ người dùng
+          await createProfile(newUser._id);
+
+          return done(null, newUser);
+        }
+      } catch (error) {
+        console.error("Error during Google authentication:", error);
+        return done(error, null);
+      }
     }
   )
 );

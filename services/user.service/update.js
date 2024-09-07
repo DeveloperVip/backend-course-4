@@ -13,6 +13,7 @@ const updateUser = async (id, body) => {
 
   if (newPassword !== undefined) {
     const hashnewPassword = await bcrypt.hash(newPassword, 14);
+    console.log("🚀 ~ updateUser ~ newPassword:", newPassword)
     user.password = hashnewPassword;
   }
   if (age !== undefined) user.age = age;

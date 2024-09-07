@@ -11,7 +11,7 @@ import { getResponseData } from "../utils/respone.js";
 import Answer from "../models/answer.model.js";
 
 const uploadImageController = async (req, res) => {
-//   console.log("🚀 ~ uploadImageController ~ req:", req.body.isTrue);
+  //   console.log("🚀 ~ uploadImageController ~ req:", req.body.isTrue);
   const image = req.file;
   if (!image) {
     const response = getResponseData({
@@ -24,11 +24,11 @@ const uploadImageController = async (req, res) => {
     const uploadedImage = await uploadImage(image);
     console.log("🚀 ~ uploadImageController ~ uploadedImage:", uploadedImage);
     const response = getResponseData({
-        data: uploadedImage,
-        status: true,
-        message: "Upload avatar success",
-      });
-      res.status(200).json(response);
+      data: uploadedImage,
+      status: true,
+      message: "Upload avatar success",
+    });
+    res.status(200).json(response);
   }
 };
 

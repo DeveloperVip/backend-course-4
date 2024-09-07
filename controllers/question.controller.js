@@ -3,6 +3,7 @@ import {
   createQuestion,
   deleteQuestion,
   getQuestion,
+  getQuestionById,
   updateQuestion,
 } from "../services/question.service/create.question.js";
 import { fileDestroy } from "../services/upload.service/file.destroy.js";
@@ -13,9 +14,9 @@ import {
 import { getResponseData } from "../utils/respone.js";
 
 const createQuestionController = async (req, res) => {
-    console.log("🚀 ~ createQuestionController ~ req.body:", req.body)
+  console.log("🚀 ~ createQuestionController ~ req.body:", req.body);
   const newQuestion = await createQuestion(req.user.userId, req.body);
-  console.log("🚀 ~ createQuestionController ~ newQuestion:", newQuestion)
+  console.log("🚀 ~ createQuestionController ~ newQuestion:", newQuestion);
   const response = getResponseData({
     data: newQuestion,
     status: true,
@@ -35,8 +36,23 @@ const updateQuestionController = async (req, res) => {
   res.status(200).json(response);
 };
 
+const getQuestionByIdController = async (req, res) => {
+  const id = req.params.id;
+  console.log("🚀 ~ getQuestionByIdController ~ id:", id);
+  const questions = await getQuestionById(id);
+  console.log("🚀 ~ getQuestionController ~ questions:", questions);
+  const response = getResponseData({
+    data: questions,
+    status: true,
+    message: "Fetch question by id success",
+  });
+  res.status(200).json(response);
+};
+
 const getQuestionController = async (req, res) => {
-  const questions = await getQuestion();
+  console.log("🚀 ~ getQuestionController ~ req.user.userId:", req.user.userId);
+  const questions = await getQuestion(req.user.userId);
+  console.log("🚀 ~ getQuestionController ~ questions:", questions);
   const response = getResponseData({
     data: questions,
     status: true,
@@ -112,4 +128,5 @@ export {
   deleteQuestionController,
   updateImageQuestionController,
   uploadImageQuestionController,
+  getQuestionByIdController,
 };
