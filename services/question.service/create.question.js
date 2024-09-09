@@ -17,7 +17,7 @@ const createQuestion = async (userId, data) => {
 };
 
 const getQuestionById = async (id) => {
-  console.log("🚀 ~ getQuestionById ~ id:", id);
+  // console.log("🚀 ~ getQuestionById ~ id:", id);
   try {
     const question = await Question.findById(id).populate("answers");
 

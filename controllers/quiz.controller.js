@@ -10,7 +10,7 @@ import { getResponseData } from "../utils/respone.js";
 
 const createQuizController = async (req, res) => {
   try {
-    console.log("🚀 ~ createQuizController ~ req:", req.body);
+    // console.log("🚀 ~ createQuizController ~ req:", req.body);
     const userId = req.user.userId;
     const quiz = await createQuiz(req.body, userId);
     res.status(201).json(quiz);
@@ -40,10 +40,10 @@ const getQuizByIdController = async (req, res) => {
 
 const getQuizByUserController = async (req, res) => {
   try {
-    console.log(
-      "🚀 ~ getQuizByUserController ~ req.user.userId:",
-      req.user.userId
-    );
+    // console.log(
+    //   "🚀 ~ getQuizByUserController ~ req.user.userId:",
+    //   req.user.userId
+    // );
     const quiz = await getQuizByUserId(req.user.userId);
     if (quiz) {
       res.status(200).json(quiz);
@@ -56,15 +56,15 @@ const getQuizByUserController = async (req, res) => {
 };
 
 const getAllQuizzesController = async (req, res) => {
-  console.log("🚀 ~ getAllQuizzesController ~ req:", req.body);
+  // console.log("🚀 ~ getAllQuizzesController ~ req:", req.body);
   try {
     const keyword = req.query.keyword;
     const selectedFilter = req.query.selectedFilter;
-    console.log(
-      "🚀 ~ getAllQuizzesController ~ keyword:",
-      keyword,
-      selectedFilter
-    );
+    // console.log(
+    //   "🚀 ~ getAllQuizzesController ~ keyword:",
+    //   keyword,
+    //   selectedFilter
+    // );
     const quizzes = await getAllQuizzes(keyword, selectedFilter);
     res.status(200).json(quizzes);
   } catch (error) {

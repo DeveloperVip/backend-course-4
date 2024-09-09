@@ -22,7 +22,7 @@ const uploadImageController = async (req, res) => {
     res.status(400).json(response);
   } else {
     const uploadedImage = await uploadImage(image);
-    console.log("🚀 ~ uploadImageController ~ uploadedImage:", uploadedImage);
+    // console.log("🚀 ~ uploadImageController ~ uploadedImage:", uploadedImage);
     const response = getResponseData({
       data: uploadedImage,
       status: true,
@@ -56,7 +56,7 @@ const updateImageController = async (req, res) => {
 };
 
 const createAnswerController = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const content = await createAnswer(req.body);
   const response = getResponseData({

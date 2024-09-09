@@ -77,7 +77,7 @@ const googleAuthCallbackController = async (req, res) => {
 
   // Chuyển hướng người dùng tới frontend kèm theo token
   const redirectUrl = `http://localhost:5173/login?token=${token}&userName=${req.user.userName}`;
-  console.log("🚀 ~ googleAuthCallbackController ~ redirectUrl:", redirectUrl);
+  // console.log("🚀 ~ googleAuthCallbackController ~ redirectUrl:", redirectUrl);
   res.redirect(redirectUrl);
 };
 
@@ -100,8 +100,8 @@ const logoutController = (req, res) => {
 
 const updateUserController = async (req, res) => {
   const id = req.params.id;
-  console.log("🚀 ~ updateUserController ~ req.params.id:", req.params.id);
-  console.log("🚀 ~ updateUserController ~ req.body:", req.body);
+  // console.log("🚀 ~ updateUserController ~ req.params.id:", req.params.id);
+  // console.log("🚀 ~ updateUserController ~ req.body:", req.body);
   const updated = await updateUser(id, req.body);
   if (updated) {
     const response = getResponseData({

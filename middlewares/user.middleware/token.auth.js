@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken";
 import { getResponseData } from "../../utils/respone.js";
 
 export const tokenMiddleware = async (req, res, next) => {
-  console.log(
-    "🚀 ~ tokenMiddleware ~ req.headers.Authorization:",
-    req.headers.authorization
-  );
+  // console.log(
+  //   "🚀 ~ tokenMiddleware ~ req.headers.Authorization:",
+  //   req.headers.authorization
+  // );
   const authorizationHeader = await req.headers.authorization;
 
   if (!authorizationHeader) {

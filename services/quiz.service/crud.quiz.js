@@ -50,55 +50,66 @@ const getQuizByUserId = async (userId) => {
 };
 
 const getAllQuizzes = async (keyword, selectedFilter) => {
-  console.log("🚀 ~ getAllQuizzes ~ keyword, filterOptions:", keyword, selectedFilter);
+  console.log("🚀 ~ getAllQuizzes ~ keyword, selectedFilter:", keyword, selectedFilter)
   try {
-    const quizzes = await Quiz.aggregate([
-      {
-        $match: {
-          name: { $regex: keyword, $options: "i" } 
-        }
-      },
-      {
-        $lookup: {
-          from: "topics",
-          localField: "topic",
-          foreignField: "_id",
-          as: "topic"
-        }
-      },
-      {
-        $unwind: {
-          path: "$topic",
-          preserveNullAndEmptyArrays: true,
-        }
-      },
-      {
-        $lookup: {
-          from: "questions",
-          localField: "question",
-          foreignField: "_id",
-          as: "question"
-        }
-      },
-      selectedFilter ? {
-        $match: {
-          $or: [
-            { "topic.name": { $regex: selectedFilter, $options: "i" } },
-            { "topic.name": { $exists: false } }
-          ],
+    if (keyword.trim() || selectedFilter.trim()) {
+      
+      const quizzes = await Quiz.aggregate([
+        {
+          $match: {
+            name: { $regex: keyword, $options: "i" },
+          },
         },
-      } : { $match: {} }
-    ]);
+        {
+          $lookup: {
+            from: "topics",
+            localField: "topic",
+            foreignField: "_id",
+            as: "topic",
+          },
+        },
+        {
+          $unwind: {
+            path: "$topic",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $lookup: {
+            from: "questions",
+            localField: "question",
+            foreignField: "_id",
+            as: "question",
+          },
+        },
+        selectedFilter
+          ? {
+              $match: {
+                "topic.name": { $regex: selectedFilter, $options: "i" },
+              },
+            }
+          : { $match: {} },
+      ]);
 
-    console.log(quizzes);
-    return quizzes;
+      // console.log(quizzes);
+      return quizzes;
+    } else {
+      const quizzes = await Quiz.find()
+        .populate({
+          path: "topic",
+        })
+        .populate({
+          path: "question",
+        })
+        .exec();
+      // console.log(quizzes);
+      return quizzes;
+    }
   } catch (error) {
+    console.error("Error getting quizzes: ", error);
     throw new Error("Error getting quizzes: " + error.message);
   }
 };
-
-
-
 
 const updateQuiz = async (id, data) => {
   try {

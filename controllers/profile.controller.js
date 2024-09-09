@@ -1,5 +1,5 @@
 import { uploadFile } from "../services/upload.service/file.upload.js";
-import { updateProfile } from "../services/profile.service/updateProfile.js";
+import { getProfile, updateProfile } from "../services/profile.service/updateProfile.js";
 import { getResponseData } from "../utils/respone.js";
 
 const uploadFileController = async (req, res) => {
@@ -23,8 +23,21 @@ const uploadFileController = async (req, res) => {
   }
 };
 
+const getProfileByUserId = async(req, res)=>{
+  const userId = req.user.userId
+  // console.log("🚀 ~ getProfileByUserId ~ userId:", userId)
+  const profile = await getProfile(userId)
+  const response = getResponseData({
+    data: profile,
+    status: true,
+    message: "Get profile success",
+  });
+  res.status(200).json(response);
+}
+
 const updateProfileController = async (req, res) => {
   const id = req.params.id;
+  // console.log("🚀 ~ updateProfileController ~ req.body:", req.body,id)
   const profile = await updateProfile(id, req.body);
   const response = getResponseData({
     data: profile,
@@ -34,4 +47,4 @@ const updateProfileController = async (req, res) => {
   res.status(200).json(response);
 };
 
-export { uploadFileController, updateProfileController };
+export { uploadFileController, updateProfileController,getProfileByUserId };

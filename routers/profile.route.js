@@ -4,9 +4,12 @@ import { tokenMiddleware } from "../middlewares/user.middleware/token.auth.js";
 import {
   uploadFileController,
   updateProfileController,
+  getProfileByUserId,
 } from "../controllers/profile.controller.js";
 
 const profileRouter = express.Router();
+
+profileRouter.get("/get", tokenMiddleware, getProfileByUserId);
 
 profileRouter.post(
   "/api/v1/upload",

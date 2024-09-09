@@ -14,9 +14,9 @@ import {
 import { getResponseData } from "../utils/respone.js";
 
 const createQuestionController = async (req, res) => {
-  console.log("🚀 ~ createQuestionController ~ req.body:", req.body);
+  // console.log("🚀 ~ createQuestionController ~ req.body:", req.body);
   const newQuestion = await createQuestion(req.user.userId, req.body);
-  console.log("🚀 ~ createQuestionController ~ newQuestion:", newQuestion);
+  // console.log("🚀 ~ createQuestionController ~ newQuestion:", newQuestion);
   const response = getResponseData({
     data: newQuestion,
     status: true,
@@ -38,9 +38,9 @@ const updateQuestionController = async (req, res) => {
 
 const getQuestionByIdController = async (req, res) => {
   const id = req.params.id;
-  console.log("🚀 ~ getQuestionByIdController ~ id:", id);
+  // console.log("🚀 ~ getQuestionByIdController ~ id:", id);
   const questions = await getQuestionById(id);
-  console.log("🚀 ~ getQuestionController ~ questions:", questions);
+  // console.log("🚀 ~ getQuestionController ~ questions:", questions);
   const response = getResponseData({
     data: questions,
     status: true,
@@ -50,9 +50,9 @@ const getQuestionByIdController = async (req, res) => {
 };
 
 const getQuestionController = async (req, res) => {
-  console.log("🚀 ~ getQuestionController ~ req.user.userId:", req.user.userId);
+  // console.log("🚀 ~ getQuestionController ~ req.user.userId:", req.user.userId);
   const questions = await getQuestion(req.user.userId);
-  console.log("🚀 ~ getQuestionController ~ questions:", questions);
+  // console.log("🚀 ~ getQuestionController ~ questions:", questions);
   const response = getResponseData({
     data: questions,
     status: true,
@@ -74,7 +74,7 @@ const deleteQuestionController = async (req, res) => {
 
 const uploadImageQuestionController = async (req, res) => {
   const image = req.file;
-  console.log("🚀 ~ uploadImageQuestionController ~ req.file:", req.file);
+  // console.log("🚀 ~ uploadImageQuestionController ~ req.file:", req.file);
   if (!image) {
     const response = getResponseData({
       data: null,
@@ -84,10 +84,10 @@ const uploadImageQuestionController = async (req, res) => {
     res.status(400).json(response);
   } else {
     const uploadedImage = await uploadImageQuestion(image);
-    console.log(
-      "🚀 ~ uploadImageQuestionController ~ uploadedImage:",
-      uploadedImage
-    );
+    // console.log(
+    //   "🚀 ~ uploadImageQuestionController ~ uploadedImage:",
+    //   uploadedImage
+    // );
     if (uploadedImage) {
       const response = getResponseData({
         data: uploadedImage,

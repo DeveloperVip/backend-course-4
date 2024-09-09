@@ -26,7 +26,7 @@ const createHistoryController = async (req, res) => {
       time: time,
       allAnswersSelected: allAnswersSelected,
     };
-    console.log("🚀 ~ createHistoryController ~ req.body:", data);
+    // console.log("🚀 ~ createHistoryController ~ req.body:", data);
     const history = await createHistory(data);
     const response = getResponseData({
       data: history,
@@ -69,10 +69,10 @@ const getHistoryByIdController = async (req, res) => {
 
 const getAllHistoriesController = async (req, res) => {
   try {
-    console.log(
-      "🚀 ~ getAllHistoriesController ~ req.user.userId:",
-      req.user.userId
-    );
+    // console.log(
+    //   "🚀 ~ getAllHistoriesController ~ req.user.userId:",
+    //   req.user.userId
+    // );
     const histories = await getAllHistories(req.user.userId);
     const response = getResponseData({
       data: histories,

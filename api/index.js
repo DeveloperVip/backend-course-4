@@ -81,12 +81,12 @@ passport.use(
 );
 //tuần tự hóa người dùng đăng nhập thành phiên
 passport.serializeUser((user, done) => {
-  console.log("vao 2");
+  // console.log("vao 2");
   done(null, user);
 });
 //giải tuần tự thông tin người dùng từ phiên
 passport.deserializeUser((user, done) => {
-  console.log("vao 3");
+  // console.log("vao 3");
   done(null, user);
 });
 
