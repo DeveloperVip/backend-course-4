@@ -76,7 +76,7 @@ const googleAuthCallbackController = async (req, res) => {
   );
 
   // Chuyển hướng người dùng tới frontend kèm theo token
-  const redirectUrl = `http://localhost:5173/login?token=${token}&userName=${req.user.userName}`;
+  const redirectUrl = `https://frontend-course4.vercel.app/login?token=${token}&userName=${req.user.userName}`;
   // console.log("🚀 ~ googleAuthCallbackController ~ redirectUrl:", redirectUrl);
   res.redirect(redirectUrl);
 };
